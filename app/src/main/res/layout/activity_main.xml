@@ -31,8 +31,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:background="#fff"
-            android:orientation="vertical"
-            android:weightSum="4">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -53,6 +52,7 @@
                 </LinearLayout>
             </RelativeLayout>
             <ListView
+                android:dividerHeight="1dp"
                 android:id="@+id/drawer_listview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

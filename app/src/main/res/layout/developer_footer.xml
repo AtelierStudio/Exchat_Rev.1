@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기타 정보"
+            android:textSize="8dp"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:textSize="8dp"
+            android:layout_marginTop="3dp"
+            android:id="@+id/developer_listview_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="환율 정보는 KEB하나은행에서 제공하는 환율 정보를 사용하였습니다\n본 어플리케이션에서 제공하는 정보는 참고사항이며 오류가 발생할 수 있고 지연될 수 있습니다"
+            android:textColor="@color/primaryTextColor" />
+    </LinearLayout>
+
+</LinearLayout>
