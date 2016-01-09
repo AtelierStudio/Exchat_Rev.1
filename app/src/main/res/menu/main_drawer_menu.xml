@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="Menu">
-        <menu>
-            <item
-                android:title="주요 환율 수정"/>
-            <item
-                android:title="최근 내역 초기화"/>
-            <item
-                android:title="빠른 검색 비활성화"/>
-            <item
-                android:title="개발자 정보"/>
-
-        </menu>
-    </item>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="주요 환율 수정" />
+    <item android:title="최근 내역 초기화" />
+    <item android:title="빠른 검색 비활성화" />
+    <item android:title="개발자 정보" />
 </menu>
