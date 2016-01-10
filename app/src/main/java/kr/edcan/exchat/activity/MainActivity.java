@@ -1,5 +1,6 @@
 package kr.edcan.exchat.activity;
 
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
@@ -27,14 +28,17 @@ import java.util.Collections;
 
 import kr.edcan.exchat.R;
 import kr.edcan.exchat.adapter.DrawerListViewAdapter;
+import kr.edcan.exchat.service.ClipBoardService;
+import kr.edcan.exchat.utils.ExchatUtils;
 
 public class MainActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
     DrawerLayout drawerLayout;
-    ArrayList<String> drawerList;
+    ArrayList<String> drawerList, title, sale;
     ListView drawerMenu;
+    ExchatUtils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +46,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setDefault();
         setSupportActionBar();
-        new getCurrent().execute();
+        startService(new Intent(getApplicationContext(), ClipBoardService.class));
+
     }
 
     private void setDefault() {
-        drawerMenu = (ListView) findViewById(R.id.drawer_listview);
+        //ArrayList
         drawerList = new ArrayList<>();
+        title = new ArrayList<>();
+        sale = new ArrayList<>();
+
+        //Utils
+        utils = new ExchatUtils(getApplicationContext());
+        title = utils.getCurrencyList("title");
+        sale = utils.getCurrencyList("sale");
+
+        //Widgets
+        drawerMenu = (ListView) findViewById(R.id.drawer_listview);
         String list[] = new String[]{"주요 환율 수정", "최근 내역 초기화", "빠른 검색 비활성화", "개발자 정보"};
         Collections.addAll(drawerList, list);
         DrawerListViewAdapter adapter = new DrawerListViewAdapter(this, drawerList);
@@ -76,27 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    class getCurrent extends AsyncTask<String, String, String>{
 
-        @Override
-        protected String doInBackground(String... params) {
-            Document doc = null;
-            try {
-                doc = Jsoup.connect("http://info.finance.naver.com/marketindex/?tabSel=exchange").get();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Elements title = doc.select("h3>span");
-            Elements content = doc.select("span.value");
-            for(Element titles : title){
-                Log.e("titles", titles.text());
-            }
-            for(Element contents : content){
-                Log.e("titles", contents.text());
-            }
-            return "Asdf";
-        }
-    }
 
 
     @Override

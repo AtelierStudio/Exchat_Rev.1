@@ -22,6 +22,7 @@
         </activity>
         <activity android:name=".activity.DeveloperActivity" >
         </activity>
+        <service android:name=".service.ClipBoardService"/>
     </application>
 
 </manifest>
