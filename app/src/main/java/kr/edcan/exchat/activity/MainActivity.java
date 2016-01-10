@@ -1,19 +1,27 @@
 package kr.edcan.exchat.activity;
 
+import android.app.ActionBar;
 import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -70,13 +78,23 @@ public class MainActivity extends AppCompatActivity {
         drawerMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
+                switch (position) {
                     case 3:
                         startActivity(new Intent(getApplicationContext(), DeveloperActivity.class));
                         break;
                 }
             }
         });
+
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+
+        float dpHeight = displayMetrics.heightPixels;
+        Log.e("asdf", dpHeight+"");
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        LinearLayout backgroundLayout  = (LinearLayout)findViewById(R.id.background_layout);
+        ViewGroup.LayoutParams params = backgroundLayout.getLayoutParams();
+        params.height = (int) dpHeight;
+
     }
 
     private void setSupportActionBar() {
@@ -90,8 +108,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-
 
 
     @Override

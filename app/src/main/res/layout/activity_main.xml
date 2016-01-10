@@ -1,5 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -16,7 +18,7 @@
             android:background="#C8C4BE"
             android:orientation="vertical">
 
-            <!-- -->
+            <!-- toolbar -->
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -26,9 +28,121 @@
                 app:titleTextColor="#FFF" />
 
             <!-- Main Layout -->
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></LinearLayout>
+                android:layout_height="match_parent"
+                android:background="#F2F2F2"
+                android:fillViewport="true">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/background_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:background="@color/colorPrimaryDark" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end"
+                                    android:text="주요 환율"
+                                    android:textColor="@color/textColor"
+                                    android:textSize="14dp" />
+
+                                <TextView
+                                    android:id="@+id/main_major_finance_from"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end"
+                                    android:text="100 JPY"
+                                    android:textColor="#FFF"
+                                    android:textSize="23dp" />
+
+                                <TextView
+                                    android:id="@+id/main_major_finance_to"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="end"
+                                    android:text="1,020.58 KRW"
+                                    android:textColor="#FFF"
+                                    android:textSize="23dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/main_share"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:background="@drawable/main_share_selector"
+                                    android:gravity="end"
+                                    android:paddingBottom="5dp"
+                                    android:paddingLeft="8dp"
+                                    android:paddingRight="8dp"
+                                    android:paddingTop="5dp"
+                                    android:text="주요 환율 공유"
+                                    android:textColor="#FFF"
+                                    android:textSize="13dp" />
+                            </LinearLayout>
+
+                            <!-- CardView Outer Layout -->
+                            <LinearLayout
+                                android:layout_marginTop="15dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:layout_marginBottom="20dp"/>
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:layout_marginBottom="20dp"/>
+
+                                <android.support.v7.widget.CardView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="200dp"
+                                    android:layout_marginBottom="20dp"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </ScrollView>
         </LinearLayout>
 
         <LinearLayout
@@ -56,11 +170,12 @@
                         android:src="@drawable/title_nav" />
                 </LinearLayout>
             </RelativeLayout>
+
             <ListView
-                android:dividerHeight="1dp"
                 android:id="@+id/drawer_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:dividerHeight="1dp" />
         </LinearLayout>
 
     </android.support.v4.widget.DrawerLayout>
