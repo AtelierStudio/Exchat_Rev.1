@@ -1,43 +1,31 @@
 package kr.edcan.exchat.activity;
 
-import android.app.ActionBar;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import kr.edcan.exchat.R;
 import kr.edcan.exchat.adapter.DrawerListViewAdapter;
+import kr.edcan.exchat.data.HistoryData;
 import kr.edcan.exchat.service.ClipBoardService;
 import kr.edcan.exchat.utils.ExchatUtils;
+import kr.edcan.exchat.utils.RecycleViewAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     DrawerLayout drawerLayout;
     ArrayList<String> drawerList, title, sale;
+    ArrayList<HistoryData> historyDatas;
     ListView drawerMenu;
     ExchatUtils utils;
 
@@ -63,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
         drawerList = new ArrayList<>();
         title = new ArrayList<>();
         sale = new ArrayList<>();
+        historyDatas = new ArrayList<>();
+
+        //Main RecyclerView
+        RecyclerView recyclerView=(RecyclerView)findViewById(R.id.recyclerview);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        historyDatas.add(new HistoryData(1 + "", "USD", 1200 + "", "KRW"));
+        historyDatas.add(new HistoryData(1+"", "USD", 1200+"", "KRW"));
+        historyDatas.add(new HistoryData(1+"", "USD", 1200+"", "KRW"));
+        historyDatas.add(new HistoryData(1+"", "USD", 1200+"", "KRW"));
+        RecycleViewAdapter mainAdapter = new RecycleViewAdapter(getApplicationContext(), historyDatas);
+        recyclerView.setAdapter(mainAdapter);
 
         //Utils
         utils = new ExchatUtils(getApplicationContext());
@@ -85,16 +87,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-
         float dpHeight = displayMetrics.heightPixels;
-        Log.e("asdf", dpHeight+"");
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
         LinearLayout backgroundLayout  = (LinearLayout)findViewById(R.id.background_layout);
         ViewGroup.LayoutParams params = backgroundLayout.getLayoutParams();
         params.height = (int) dpHeight;
-
     }
 
     private void setSupportActionBar() {
