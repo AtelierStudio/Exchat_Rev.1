@@ -7,7 +7,7 @@ public class HistoryData {
     private String prevUnit, convertUnit;
     private String prevValue, convertValue;
 
-    public HistoryData(String prevUnit, String prevValue, String convertUnit, String convertValue){
+    public HistoryData(String prevValue, String prevUnit, String convertValue, String convertUnit){
         this.prevUnit = prevUnit;
         this.prevValue = prevValue;
         this.convertUnit = convertUnit;

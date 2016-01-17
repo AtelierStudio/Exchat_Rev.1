@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2B373E"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/tuto_3_main_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/title_tutorial_slide3_frame" />
+
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tuto_3_main_image"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20dp"
+            android:textColor="#FFF"
+            android:text="일상에서는 빠르게"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:background="#1D262A"
+            android:layout_width="40dp"
+            android:layout_height="3dp"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textSize="12dp"
+            android:textColor="#8D9BA3"
+            android:gravity="center"
+            android:text="알아보고 싶은 환전 정보를 클립보드에 복사하면\nExchat이 분석해 바로 위젯으로 알려드립니다.\n그리고 즉시 공유할 수도 있죠."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tutorial_page_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/round_square"
+        android:paddingBottom="10dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:paddingTop="10dp"
+        android:text="다음으로"
+        android:textColor="#FFF"
+        android:textSize="15dp" />
+</RelativeLayout>

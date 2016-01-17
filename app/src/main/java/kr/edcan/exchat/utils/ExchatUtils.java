@@ -18,20 +18,20 @@ import java.util.concurrent.ExecutionException;
  */
 public class ExchatUtils {
 
-    final static String[] foreignmoneyUnits = new String[]{
-            "달러", "유로", "엔", "위안", "홍콩 달러", "신타이완달러", "파운드", "오만리얄", "캐나다 달러",
-            "스위스프랑", "스웨덴크로나", "오스트레일리아달러", "뉴질랜드달러", "코루나", "페소", "리라", "투그릭",
-            "크로네", "리얄", "쿠웨이트디나르", "디나르", "디르함", "요르단디나르", "이집트파운드", "밧", "싱가포르달러",
-            "링깃", "루피아", "카타르리얄", "텡게", "브루나이달러", "인도루피", "파키스탄루피", "타카", "필리핀페소",
-            "멕시코페소", "레알", "동", "랜드", "루블", "포린트", "즈워티"
-    };
+    ArrayList<String> titles, values;
     Context context;
 
     public ExchatUtils(Context context) {
         this.context = context;
+
+        titles = new ArrayList<>();
+        values = new ArrayList<>();
+        titles = getCurrencyList("title");
+        values = getCurrencyList("values");
+
     }
 
-    public ArrayList<String> getCurrencyList(String type) {
+    private ArrayList<String> getCurrencyList(String type) {
         try {
             return new getCurrency(type).execute().get();
         } catch (InterruptedException e) {
@@ -42,14 +42,19 @@ public class ExchatUtils {
         return null;
     }
 
-    class getCurrency extends AsyncTask<String, String, ArrayList<String>> {
+    private class getCurrency extends AsyncTask<String, String, ArrayList<String>> {
         ArrayList<String> arrayList;
         String CSSQuery = "";
 
         public getCurrency(String s) {
-            if (s.equals("title")) CSSQuery = "td.tit";
-            else CSSQuery = "td.sale";
             arrayList = new ArrayList<>();
+            if (s.equals("title")) {
+                CSSQuery = "td.tit";
+                arrayList.add("한국 KRW");
+            } else {
+                arrayList.add("1");
+                CSSQuery = "td.sale";
+            }
         }
 
         @Override
@@ -64,24 +69,35 @@ public class ExchatUtils {
             for (Element datas : data) {
                 arrayList.add(datas.text());
             }
+            if(CSSQuery.equals("td.sale")) arrayList.set(3, Float.parseFloat(arrayList.get(3).replace(",",""))/100+"");
             return arrayList;
         }
-
     }
 
-    public int getCountIndexFromString(String s) {
-
-        return 0;
-    }
-
-    public String getNumFromString(String s) {
-        if (s == null || s.isEmpty()) return "";
-        StringBuilder sb = new StringBuilder();
-        for (char c : s.toCharArray()) {
-            if (Character.isDigit(c)) {
-                sb.append(c);
-            }
+    public float calculateValues(float target, int prevPosition, int convertPosition) {
+        if (prevPosition == convertPosition) return target;
+        else {
+            if (prevPosition == 0) return convertFromKRW(convertPosition, target);
+            else if (convertPosition == 0) return convertToKRW(prevPosition, target);
+            else return convertFromKRW(convertPosition, convertToKRW(prevPosition, target));
         }
-        return sb.toString();
+    }
+
+    public float convertFromKRW(int position, float target) {
+        return target / Float.parseFloat(values.get(position).replace(",", ""));
+    }
+
+    public float convertToKRW(int position, float target) {
+        return target * Float.parseFloat(values.get(position).replace(",", ""));
+    }
+
+
+    // Getter
+    public ArrayList<String> getTitles() {
+        return titles;
+    }
+
+    public ArrayList<String> getValues() {
+        return values;
     }
 }

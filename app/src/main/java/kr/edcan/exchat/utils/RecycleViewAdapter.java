@@ -2,6 +2,7 @@ package kr.edcan.exchat.utils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         HistoryData item = items.get(position);
+        Log.e("sexonthebeach", "Setting View for "+ position +"th");
         holder.prevValue.setText(item.getPrevValue());
         holder.prevUnit.setText(item.getPrevUnit());
         holder.convertUnit.setText(item.getConvertUnit());

@@ -22,7 +22,13 @@
         </activity>
         <activity android:name=".activity.DeveloperActivity" >
         </activity>
-        <service android:name=".service.ClipBoardService"/>
+
+        <service android:name=".service.ClipBoardService" />
+
+        <activity android:name=".activity.MainUnitSetActivity" >
+        </activity>
+        <activity android:name=".activity.TutorialActivity" >
+        </activity>
     </application>
 
 </manifest>
