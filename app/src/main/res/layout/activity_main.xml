@@ -25,53 +25,90 @@
                 android:minHeight="?attr/actionBarSize"
                 app:titleTextColor="#FFF" />
 
-            <!-- Main Layout -->
-            <!--<ScrollView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#F2F2F2"-->
-            <!--android:fillViewport="true">-->
-
-            <FrameLayout
+            <com.github.florent37.parallax.ScrollView
+                android:id="@+id/contentScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:id="@+id/background_layout"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="2">
+                    android:layout_height="match_parent">
 
-                    <LinearLayout
+                    <com.github.florent37.parallax.ParallaxView
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/colorPrimaryDark" />
-                </LinearLayout>
+                        android:layout_height="200dp"
+                        android:background="@color/colorPrimaryDark"
+                        app:parallaxVertical="0.7" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
+                    <com.github.florent37.parallax.ParallaxView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp">
+                        android:layout_height="270dp"
+                        android:padding="16dp"
+                        android:background="@color/colorPrimaryDark"
+                        app:parallaxVertical="0.5">
 
-                        <!-- CardView Outer Layout -->
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recyclerview"
+                        <LinearLayout
+                            android:layout_gravity="center"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:scrollbars="vertical" />
+                            android:gravity="end"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="주요 환율"
+                                android:textColor="@color/textColor"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:id="@+id/main_major_finance_from"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="100 JPY"
+                                android:textColor="#FFF"
+                                android:textSize="23dp" />
+
+                            <TextView
+                                android:id="@+id/main_major_finance_to"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:text="1,020.58 KRW"
+                                android:textColor="#FFF"
+                                android:textSize="23dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/main_share"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/main_share_selector"
+                                android:gravity="end"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="5dp"
+                                android:text="주요 환율 공유"
+                                android:textColor="#FFF"
+                                android:textSize="13dp" />
+                        </LinearLayout>
+                    </com.github.florent37.parallax.ParallaxView>
+
+                    <!-- CardView Outer Layout -->
+                    <LinearLayout
+                        android:id="@+id/cardview_outer_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="200dp"
+                        android:orientation="vertical">
 
                     </LinearLayout>
-                </LinearLayout>
-            </FrameLayout>
+                </FrameLayout>
+            </com.github.florent37.parallax.ScrollView>
         </LinearLayout>
 
         <LinearLayout

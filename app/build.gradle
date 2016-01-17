@@ -37,4 +37,7 @@ dependencies {
     compile('com.github.afollestad.material-dialogs:commons:0.8.5.3@aar') {
         transitive = true
     }
+    compile ('com.github.florent37:androidparallax:1.0.1@aar'){
+        transitive=true
+    }
 }
