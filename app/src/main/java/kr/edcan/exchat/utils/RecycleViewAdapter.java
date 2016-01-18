@@ -37,10 +37,10 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         HistoryData item = items.get(position);
         Log.e("sexonthebeach", "Setting View for "+ position +"th");
-        holder.prevValue.setText(item.getPrevValue());
-        holder.prevUnit.setText(item.getPrevUnit());
-        holder.convertUnit.setText(item.getConvertUnit());
-        holder.convertValue.setText(item.getConvertValue());
+        holder.prevValue.setText(item.getPrevValue()+"");
+        holder.prevUnit.setText(item.getPrevUnit()+"");
+        holder.convertUnit.setText(item.getConvertUnit()+"");
+        holder.convertValue.setText(item.getConvertValue()+"");
     }
 
     @Override

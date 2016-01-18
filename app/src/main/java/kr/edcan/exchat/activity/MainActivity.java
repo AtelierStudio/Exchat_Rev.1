@@ -1,48 +1,44 @@
 package kr.edcan.exchat.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
-import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
-import com.github.florent37.parallax.ScrollView;
-import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
-
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 import kr.edcan.exchat.R;
 import kr.edcan.exchat.adapter.DrawerListViewAdapter;
 import kr.edcan.exchat.data.HistoryData;
 import kr.edcan.exchat.service.ClipBoardService;
 import kr.edcan.exchat.utils.ExchatUtils;
-import kr.edcan.exchat.utils.RecycleViewAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -55,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView drawerMenu;
     ExchatUtils utils;
     Spinner previousSpinner, convertSpinner;
-
+    Realm realm;
+    ImageView spinnerTo;
     EditText mainOrigin;
     TextView originUnit, convertValue, convertUnit;
 
@@ -63,31 +60,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        realm = Realm.getInstance(this);
         setDefault();
         setSupportActionBar();
         startService(new Intent(getApplicationContext(), ClipBoardService.class));
     }
 
+
     private void setDefault() {
+        final SharedPreferences sharedPreferences = getSharedPreferences("Exchat", 0);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         //ArrayList
         drawerList = new ArrayList<>();
         title = new ArrayList<>();
         sale = new ArrayList<>();
         historyDatas = new ArrayList<>();
-//
-//        //Main RecyclerView
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(layoutManager);
-//        historyDatas.add(new HistoryData(1 + "", "USD", 1200 + "", "KRW"));
-//        historyDatas.add(new HistoryData(1 + "", "USD", 1200 + "", "KRW"));
-//        historyDatas.add(new HistoryData(1 + "", "USD", 1200 + "", "KRW"));
-//        historyDatas.add(new HistoryData(1 + "", "USD", 1200 + "", "KRW"));
-//        RecycleViewAdapter mainAdapter = new RecycleViewAdapter(getApplicationContext(), historyDatas);
-//        recyclerView.setAdapter(mainAdapter);
-//        RecyclerViewHeader header = RecyclerViewHeader.fromXml(getApplicationContext(), R.layout.main_header);
-//        header.attachTo(recyclerView);
 
         //Utils
         utils = new ExchatUtils(getApplicationContext());
@@ -98,38 +85,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         originUnit = (TextView) findViewById(R.id.header_prevUnit);
         convertValue = (TextView) findViewById(R.id.header_convertValue);
         convertUnit = (TextView) findViewById(R.id.header_convertUnit);
-//        mainOrigin.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String result = "0.0";
-//                String value = mainOrigin.getText().toString().trim();
-//                if(!value.isEmpty()){
-//                    Log.e("selected", previousSpinner.getSelectedItemPosition() + "," + convertSpinner.getSelectedItemPosition());
-//                    result = utils.calculateValues(Float.parseFloat(value), previousSpinner.getSelectedItemPosition()
-//                    , convertSpinner.getSelectedItemPosition())+"";
-//                }
-//                convertValue.setText(result);
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//        //Widgets
-//        previousSpinner = (Spinner) findViewById(R.id.main_previous_spinner);
-//        convertSpinner = (Spinner) findViewById(R.id.main_convert_spinner);
-//        SpinnerAdapter units = new ArrayAdapter<String>(MainActivity.this, R.layout.spinner_textstyle, title);
-//        previousSpinner.setAdapter(units);
-//        convertSpinner.setAdapter(units);
+        mainOrigin.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-//        shareCurrent = (TextView) findViewById(R.id.main_share);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                updateCalc(s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        //Widgets
+        previousSpinner = (Spinner) findViewById(R.id.main_previous_spinner);
+        convertSpinner = (Spinner) findViewById(R.id.main_convert_spinner);
+        SpinnerAdapter units = new ArrayAdapter<String>(MainActivity.this, R.layout.spinner_textstyle, title);
+        previousSpinner.setAdapter(units);
+        convertSpinner.setAdapter(units);
+
+        spinnerTo = (ImageView) findViewById(R.id.main_spinner_to_image);
+        spinnerTo.getDrawable().setColorFilter(Color.parseColor("#7B8F9A"), PorterDuff.Mode.MULTIPLY);
+        shareCurrent = (TextView) findViewById(R.id.main_share);
         drawerMenu = (ListView) findViewById(R.id.drawer_listview);
+
         String list[] = new String[]{"주요 환율 수정", "최근 내역 초기화", "빠른 검색 비활성화", "개발자 정보"};
         Collections.addAll(drawerList, list);
         DrawerListViewAdapter adapter = new DrawerListViewAdapter(this, drawerList);
@@ -138,38 +121,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
+                    case 0:
+                        break;
+                    case 1:
+                        eraseDB();
+                        break;
+                    case 2:
+                        boolean b = sharedPreferences.getBoolean("fastSearch", true);
+                        if (b) editor.putBoolean("fastSearch", false);
+                        else editor.putBoolean("fastSearch", true);
+
                     case 3:
                         startActivity(new Intent(getApplicationContext(), DeveloperActivity.class));
                         break;
                 }
             }
+
         });
 
-        //OnClickListener
-//        shareCurrent.setOnClickListener(this);
-//        previousSpinner.setSelection(0);
-//        convertSpinner.setSelection(1);
-//        previousSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                originUnit.setText(title.get(position).split(" ")[1]);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//            }
-//        });
-//        convertSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//                convertUnit.setText(title.get(position).split(" ")[1]);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//
-//            }
-//        });
+        shareCurrent.setOnClickListener(this);
+        previousSpinner.setSelection(1);
+        convertSpinner.setSelection(0);
+        previousSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                originUnit.setText(title.get(position).split(" ")[1]);
+                updateCalc(mainOrigin.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        convertSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                convertUnit.setText(title.get(position).split(" ")[1]);
+                updateCalc(mainOrigin.getText().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
     }
 
     private void setSupportActionBar() {
@@ -181,8 +177,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 drawerLayout, R.string.app_name, R.string.app_name);
         toggle.setDrawerIndicatorEnabled(true);
         drawerLayout.setDrawerListener(toggle);
+
     }
 
+    public void updateCalc(CharSequence s) {
+        String result = "0.0";
+        String value = s.toString().trim();
+        if (!value.isEmpty()) {
+            Log.e("selected", previousSpinner.getSelectedItemPosition() + "," + convertSpinner.getSelectedItemPosition());
+            result = utils.calculateValues(Float.parseFloat(value), previousSpinner.getSelectedItemPosition()
+                    , convertSpinner.getSelectedItemPosition()) + "";
+        }
+        convertValue.setText(result);
+    }
+
+    private void shareText() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "오늘 일본환율은 100 JPY = 1,020.58 KRW 입니다. #Exchat.");
+        startActivity(Intent.createChooser(sharingIntent, "환율 정보 공유"));
+    }
+
+
+    private void eraseDB() {
+        realm.beginTransaction();
+        RealmResults<HistoryData> results = realm.where(HistoryData.class)
+                .findAll();
+        results.clear();
+        realm.commitTransaction();
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -209,8 +232,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_share:
+                shareText();
                 break;
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setHistoryData();
+    }
+
+    private void setHistoryData() {
+        realm.beginTransaction();
+        RealmResults<HistoryData> results = realm.where(HistoryData.class)
+                .findAll();
+        results.sort("date", Sort.ASCENDING);
+        realm.commitTransaction();
+
+        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout cardOuter = (LinearLayout) findViewById(R.id.outer_view);
+        cardOuter.removeAllViews();
+        for (HistoryData data : results) {
+            View view = layoutInflater.inflate(R.layout.main_cardview_content, null);
+            TextView prevValue = (TextView) view.findViewById(R.id.prevValue);
+            TextView prevUnit = (TextView) view.findViewById(R.id.prevUnit);
+            TextView convertValue = (TextView) view.findViewById(R.id.convertValue);
+            TextView convertUnit = (TextView) view.findViewById(R.id.convertUnit);
+            prevUnit.setText(data.getPrevUnit());
+            prevValue.setText(data.getPrevValue() + "");
+            convertValue.setText(data.getConvertValue() + "");
+            convertUnit.setText(data.getConvertUnit());
+            cardOuter.addView(view);
+        }
+    }
 }
