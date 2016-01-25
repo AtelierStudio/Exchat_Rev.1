@@ -4,11 +4,11 @@ package kr.edcan.exchat.data;
  * Created by Junseok on 2016. 1. 18..
  */
 public class ClipBoardData {
-    private String unit;
+    private int unit;
     private float value;
     private float convertValue;
 
-    public ClipBoardData(String unit, float value, float convertValue) {
+    public ClipBoardData(int unit, float value, float convertValue) {
         this.unit = unit;
         this.value = value;
         this.convertValue = convertValue;
@@ -18,11 +18,11 @@ public class ClipBoardData {
         return value;
     }
 
-    public String getUnit() {
+    public int getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(int unit) {
         this.unit = unit;
     }
 

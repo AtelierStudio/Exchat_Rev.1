@@ -49,22 +49,22 @@ public class ClipBoardService extends Service {
                 public void onPrimaryClipChanged() {
                     String capturedString = manager.getPrimaryClip().getItemAt(0).getText().toString();
                     ExchatClipboardUtils utils = new ExchatClipboardUtils(getApplicationContext());
-                    ArrayList<ClipBoardData> arr = utils.getResult(capturedString);
-                    if (arr != null) {
+                    ClipBoardData clipData = utils.getResult(capturedString);
+                    if (clipData != null) {
                         startActivity(new Intent(getApplicationContext(), ClipboardPopupViewActivity.class)
-                                .putExtra("unit", arr.get(0).getUnit())
-                                .putExtra("value", arr.get(0).getValue())
-                                .putExtra("convertValue", arr.get(0).getConvertValue())
+                                .putExtra("unit", clipData.getUnit())
+                                .putExtra("value", clipData.getValue())
+                                .putExtra("convertValue", clipData.getConvertValue())
                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                 .addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
                         Realm realm = Realm.getInstance(getApplicationContext());
                         realm.beginTransaction();
                         HistoryData data = realm.createObject(HistoryData.class);
                         Date date = new Date(System.currentTimeMillis());
-                        data.setConvertUnit("엔");
-                        data.setPrevUnit(arr.get(0).getUnit());
-                        data.setConvertValue(arr.get(0).getConvertValue());
-                        data.setPrevValue(arr.get(0).getValue());
+                        data.setConvertUnit(0);
+                        data.setPrevUnit(clipData.getUnit());
+                        data.setConvertValue(clipData.getConvertValue());
+                        data.setPrevValue(clipData.getValue());
                         data.setDate(date);
                         realm.commitTransaction();
                     }

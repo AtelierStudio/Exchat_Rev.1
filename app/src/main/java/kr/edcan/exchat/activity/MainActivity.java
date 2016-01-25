@@ -38,6 +38,7 @@ import kr.edcan.exchat.R;
 import kr.edcan.exchat.adapter.DrawerListViewAdapter;
 import kr.edcan.exchat.data.HistoryData;
 import kr.edcan.exchat.service.ClipBoardService;
+import kr.edcan.exchat.utils.ExchatClipboardUtils;
 import kr.edcan.exchat.utils.ExchatUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -244,6 +245,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setHistoryData() {
+        ExchatClipboardUtils clipboardUtils = new ExchatClipboardUtils(getApplicationContext());
         realm.beginTransaction();
         RealmResults<HistoryData> results = realm.where(HistoryData.class)
                 .findAll();
@@ -254,15 +256,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout cardOuter = (LinearLayout) findViewById(R.id.outer_view);
         cardOuter.removeAllViews();
         for (HistoryData data : results) {
+            Log.e("sexonthebeach", "PrevValue : "+data.getPrevValue()+"ConvertValue : "+data.getConvertValue());
             View view = layoutInflater.inflate(R.layout.main_cardview_content, null);
             TextView prevValue = (TextView) view.findViewById(R.id.prevValue);
             TextView prevUnit = (TextView) view.findViewById(R.id.prevUnit);
             TextView convertValue = (TextView) view.findViewById(R.id.convertValue);
             TextView convertUnit = (TextView) view.findViewById(R.id.convertUnit);
-            prevUnit.setText(data.getPrevUnit());
-            prevValue.setText(data.getPrevValue() + "");
+            prevUnit.setText(clipboardUtils.foreignmoneyUnits[data.getPrevUnit()]);
+            prevValue.setText(data.getPrevValue()+"");
             convertValue.setText(data.getConvertValue() + "");
-            convertUnit.setText(data.getConvertUnit());
+            convertUnit.setText(clipboardUtils.foreignmoneyUnits[data.getConvertUnit()]);
             cardOuter.addView(view);
         }
     }

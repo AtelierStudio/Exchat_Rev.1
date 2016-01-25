@@ -10,15 +10,15 @@ import io.realm.annotations.PrimaryKey;
  */
 public class HistoryData extends RealmObject{
 
-    private String prevUnit, convertUnit;
+    private int prevUnit, convertUnit;
     private float prevValue, convertValue;
     private Date date;
 
-    public String getConvertUnit() {
+    public int getConvertUnit() {
         return convertUnit;
     }
 
-    public String getPrevUnit() {
+    public int getPrevUnit() {
         return prevUnit;
     }
 
@@ -34,7 +34,7 @@ public class HistoryData extends RealmObject{
         this.prevValue = prevValue;
     }
 
-    public void setPrevUnit(String prevUnit) {
+    public void setPrevUnit(int prevUnit) {
         this.prevUnit = prevUnit;
     }
 
@@ -42,7 +42,7 @@ public class HistoryData extends RealmObject{
         this.convertValue = convertValue;
     }
 
-    public void setConvertUnit(String convertUnit) {
+    public void setConvertUnit(int convertUnit) {
         this.convertUnit = convertUnit;
     }
 

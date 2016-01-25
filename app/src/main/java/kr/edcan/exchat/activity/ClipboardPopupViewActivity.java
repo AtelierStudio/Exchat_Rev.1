@@ -11,6 +11,7 @@ import android.widget.TextView;
 import kr.edcan.exchat.R;
 import kr.edcan.exchat.data.ClipBoardData;
 import kr.edcan.exchat.data.HistoryData;
+import kr.edcan.exchat.utils.ExchatClipboardUtils;
 
 public class ClipboardPopupViewActivity extends Activity {
 
@@ -31,11 +32,11 @@ public class ClipboardPopupViewActivity extends Activity {
         intent = getIntent();
         prev = (TextView) findViewById(R.id.dialog_prev);
         result = (TextView) findViewById(R.id.dialog_result);
-
-        ClipBoardData data = new ClipBoardData(intent.getStringExtra("unit"),
+        ExchatClipboardUtils utils = new ExchatClipboardUtils(getApplicationContext());
+        ClipBoardData data = new ClipBoardData(intent.getIntExtra("unit", 0),
                 intent.getFloatExtra("value", (float) 0.0), intent.getFloatExtra("convertValue", (float) 0.0));
 
-        prev.setText(data.getValue() + " " + data.getUnit());
+        prev.setText(data.getValue() + " " + utils.foreignmoneyUnits[data.getUnit()]);
         result.setText(data.getConvertValue() + " " + "원");
     }
 
