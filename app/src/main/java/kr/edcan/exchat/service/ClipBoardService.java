@@ -47,26 +47,28 @@ public class ClipBoardService extends Service {
             manager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
                 @Override
                 public void onPrimaryClipChanged() {
-                    String capturedString = manager.getPrimaryClip().getItemAt(0).getText().toString();
-                    ExchatClipboardUtils utils = new ExchatClipboardUtils(getApplicationContext());
-                    ClipBoardData clipData = utils.getResult(capturedString);
-                    if (clipData != null) {
-                        startActivity(new Intent(getApplicationContext(), ClipboardPopupViewActivity.class)
-                                .putExtra("unit", clipData.getUnit())
-                                .putExtra("value", clipData.getValue())
-                                .putExtra("convertValue", clipData.getConvertValue())
-                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                .addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
-                        Realm realm = Realm.getInstance(getApplicationContext());
-                        realm.beginTransaction();
-                        HistoryData data = realm.createObject(HistoryData.class);
-                        Date date = new Date(System.currentTimeMillis());
-                        data.setConvertUnit(0);
-                        data.setPrevUnit(clipData.getUnit());
-                        data.setConvertValue(clipData.getConvertValue());
-                        data.setPrevValue(clipData.getValue());
-                        data.setDate(date);
-                        realm.commitTransaction();
+                    if (manager.getPrimaryClipDescription().toString().contains("text")) {
+                        String capturedString = manager.getPrimaryClip().getItemAt(0).getText().toString();
+                        ExchatClipboardUtils utils = new ExchatClipboardUtils(getApplicationContext());
+                        ClipBoardData clipData = utils.getResult(capturedString);
+                        if (clipData != null) {
+                            startActivity(new Intent(getApplicationContext(), ClipboardPopupViewActivity.class)
+                                    .putExtra("unit", clipData.getUnit())
+                                    .putExtra("value", clipData.getValue())
+                                    .putExtra("convertValue", clipData.getConvertValue())
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    .addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK));
+                            Realm realm = Realm.getInstance(getApplicationContext());
+                            realm.beginTransaction();
+                            HistoryData data = realm.createObject(HistoryData.class);
+                            Date date = new Date(System.currentTimeMillis());
+                            data.setConvertUnit(0);
+                            data.setPrevUnit(clipData.getUnit());
+                            data.setConvertValue(clipData.getConvertValue());
+                            data.setPrevValue(clipData.getValue());
+                            data.setDate(date);
+                            realm.commitTransaction();
+                        }
                     }
                 }
             });

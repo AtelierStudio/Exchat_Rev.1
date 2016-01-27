@@ -21,7 +21,7 @@ public class ExchatClipboardUtils {
             "KZT", "BND", "INR", "PKR", "BDT", "PHP", "MXN", "BRL", "VND", "ZAR", "RUB", "HUF", "PLN"
     };
     public final static String[] foreignmoneyUnitsText = new String[]{
-            "원", "달러", "유로", "엔", "위안", "홍콩 달러", "신타이완달러", "파운드", "오만리얄", "캐나다 달러",
+            "원", "달러", "유로", "엔", "위안", "홍콩달러", "신타이완달러", "파운드", "오만리얄", "캐나다달러",
             "스위스프랑", "스웨덴크로나", "오스트레일리아달러", "뉴질랜드달러", "코루나", "페소", "리라", "투그릭", "셰켈",
             "크로네", "크로네", "리얄", "쿠웨이트디나르", "디나르", "디르함", "요르단디나르", "이집트파운드", "밧", "싱가포르달러",
             "링깃", "루피아", "카타르리얄", "텡게", "브루나이달러", "인도루피", "파키스탄루피", "타카", "필리핀페소",
@@ -30,7 +30,7 @@ public class ExchatClipboardUtils {
     public final static String[] foreignmoneyUnitsSign = new String[]{
             "₩", "$", "€", "Ұ", "Y", "HK$", "NT$", "£", "ر.ع.", "C$", "CHF", "kr", "AUD", "NZD", "Kč",
             "CLP", "TRY", "₮", "\t₪", "kr", "Kr", "﷼", "د.ك", ".د.ب", "د.إ", "دينار", "ج.م", "฿", "S$",
-            "RM", "Rp", "QR", "₸", "B$", "Rs", "Rs", "৳", "₱", "$", "R$", "₫", "R", "\u20BD\n", "Ft", "zł"
+            "RM", "Rp", "QR", "₸", "B$", "Rs", "Rs", "৳", "₱", "M$", "R$", "₫", "R", "\u20BD\n", "Ft", "zł"
     };
 
     public ExchatClipboardUtils(Context c) {
@@ -53,7 +53,6 @@ public class ExchatClipboardUtils {
                 indexcnt++;
                 unitValue = foreignmoneyUnitsText[i];
                 index = i;
-                break;
             }
         }
         if (indexcnt == 0) {
@@ -63,7 +62,6 @@ public class ExchatClipboardUtils {
                     indexcnt++;
                     unitValue = foreignmoneyUnitsSign[i];
                     index = i;
-                    break;
                 }
             }
         }
@@ -71,7 +69,7 @@ public class ExchatClipboardUtils {
         else {
             if (type == 0)
                 regularPattern = "[0-9]+(\\.[0-9]*)?" + unitValue;
-            else regularPattern = unitValue + "[0-9]+(\\.[0-9]*)?";
+            else regularPattern = unitValue.replace("$", "\\$") + "[0-9]+(\\.[0-9]*)?";
             Pattern pattern = Pattern.compile(regularPattern);
             Matcher matcher = pattern.matcher(s);
             if (matcher.find()) {
