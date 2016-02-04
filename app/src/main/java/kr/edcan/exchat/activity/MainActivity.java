@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -43,6 +45,8 @@ import kr.edcan.exchat.utils.ExchatUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TYPEFACE_NAME = "batang.ttc";
+    Typeface typeface = null;
     TextView shareCurrent;
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loadTypeFace();
         setContentView(R.layout.activity_main);
         realm = Realm.getInstance(this);
         setDefault();
@@ -67,6 +72,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startService(new Intent(getApplicationContext(), ClipBoardService.class));
     }
 
+    private void loadTypeFace() {
+        if(typeface == null)
+            typeface = Typeface.createFromAsset(getAssets(), TYPEFACE_NAME);
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        View view = LayoutInflater.from(this).inflate(layoutResID, null);
+        ViewGroup group = (ViewGroup)view;
+        int childCnt = group.getChildCount();
+        for (int i = 0; i < childCnt; i++) {
+            View v = group.getChildAt(i);
+            if( v instanceof kr.edcan.exchat.utils.ExchatTextView){
+                kr.edcan.exchat.utils.ExchatTextView textView = (kr.edcan.exchat.utils.ExchatTextView)v;
+                textView.setText("asdfsdaf");
+                Log.e("asdf",textView.getText().toString());
+                ((TextView) v).setTypeface(typeface);
+            }
+        }
+        super.setContentView(layoutResID);
+    }
 
     private void setDefault() {
         final SharedPreferences sharedPreferences = getSharedPreferences("Exchat", 0);
@@ -256,14 +282,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout cardOuter = (LinearLayout) findViewById(R.id.outer_view);
         cardOuter.removeAllViews();
         for (HistoryData data : results) {
-            Log.e("sexonthebeach", "PrevValue : "+data.getPrevValue()+"ConvertValue : "+data.getConvertValue());
+            Log.e("sexonthebeach", "PrevValue : " + data.getPrevValue() + "ConvertValue : " + data.getConvertValue());
             View view = layoutInflater.inflate(R.layout.main_cardview_content, null);
             TextView prevValue = (TextView) view.findViewById(R.id.prevValue);
             TextView prevUnit = (TextView) view.findViewById(R.id.prevUnit);
             TextView convertValue = (TextView) view.findViewById(R.id.convertValue);
             TextView convertUnit = (TextView) view.findViewById(R.id.convertUnit);
             prevUnit.setText(clipboardUtils.foreignmoneyUnits[data.getPrevUnit()]);
-            prevValue.setText(data.getPrevValue()+"");
+            prevValue.setText(data.getPrevValue() + "");
             convertValue.setText(data.getConvertValue() + "");
             convertUnit.setText(clipboardUtils.foreignmoneyUnits[data.getConvertUnit()]);
             cardOuter.addView(view);

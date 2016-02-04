@@ -25,7 +25,9 @@
 
         <service android:name=".service.ClipBoardService" />
 
-        <activity android:name=".activity.MainUnitSetActivity"></activity>
+        <activity android:name=".activity.MainUnitSetActivity">
+
+        </activity>
         <activity android:name=".activity.TutorialActivity"></activity>
 
         <receiver

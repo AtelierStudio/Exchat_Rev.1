@@ -54,7 +54,7 @@
                             android:gravity="end"
                             android:orientation="vertical">
 
-                            <TextView
+                            <kr.edcan.exchat.utils.ExchatTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="end"
@@ -62,7 +62,7 @@
                                 android:textColor="@color/textColor"
                                 android:textSize="14dp" />
 
-                            <TextView
+                            <kr.edcan.exchat.utils.ExchatTextView
                                 android:id="@+id/main_major_finance_from"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                                 android:textColor="#FFF"
                                 android:textSize="23dp" />
 
-                            <TextView
+                            <kr.edcan.exchat.utils.ExchatTextView
                                 android:id="@+id/main_major_finance_to"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                                 android:textSize="23dp"
                                 android:textStyle="bold" />
 
-                            <TextView
+                            <kr.edcan.exchat.utils.ExchatTextView
                                 android:id="@+id/main_share"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
                                     android:orientation="vertical"
                                     android:padding="16dp">
 
-                                    <TextView
+                                    <kr.edcan.exchat.utils.ExchatTextView
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:text="계산기"
@@ -162,7 +162,7 @@
                                             android:textColorHint="@color/textColor"
                                             android:textSize="30sp" />
 
-                                        <TextView
+                                        <kr.edcan.exchat.utils.ExchatTextView
                                             android:id="@+id/header_prevUnit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -187,7 +187,7 @@
                                         android:layout_height="wrap_content"
                                         android:orientation="horizontal">
 
-                                        <TextView
+                                        <kr.edcan.exchat.utils.ExchatTextView
                                             android:id="@+id/header_convertValue"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                                             android:textColorHint="@color/orangeMiddle"
                                             android:textSize="30sp" />
 
-                                        <TextView
+                                        <kr.edcan.exchat.utils.ExchatTextView
                                             android:id="@+id/header_convertUnit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
