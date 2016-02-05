@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -29,7 +30,11 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -45,7 +50,10 @@ import kr.edcan.exchat.utils.ExchatUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final String TYPEFACE_NAME = "batang.ttc";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+    long lastUpdateTime;
+    private static final String TYPEFACE_NAME = "roboto_light.ttf";
     Typeface typeface = null;
     TextView shareCurrent;
     Toolbar toolbar;
@@ -73,40 +81,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void loadTypeFace() {
-        if(typeface == null)
+        if (typeface == null)
             typeface = Typeface.createFromAsset(getAssets(), TYPEFACE_NAME);
     }
 
-    @Override
-    public void setContentView(int layoutResID) {
-        View view = LayoutInflater.from(this).inflate(layoutResID, null);
-        ViewGroup group = (ViewGroup)view;
-        int childCnt = group.getChildCount();
-        for (int i = 0; i < childCnt; i++) {
-            View v = group.getChildAt(i);
-            if( v instanceof kr.edcan.exchat.utils.ExchatTextView){
-                kr.edcan.exchat.utils.ExchatTextView textView = (kr.edcan.exchat.utils.ExchatTextView)v;
-                textView.setText("asdfsdaf");
-                Log.e("asdf",textView.getText().toString());
-                ((TextView) v).setTypeface(typeface);
-            }
-        }
-        super.setContentView(layoutResID);
-    }
-
     private void setDefault() {
-        final SharedPreferences sharedPreferences = getSharedPreferences("Exchat", 0);
-        final SharedPreferences.Editor editor = sharedPreferences.edit();
+        utils = new ExchatUtils(getApplicationContext());
+        sharedPreferences = getSharedPreferences("Exchat", 0);
+        editor = sharedPreferences.edit();
         //ArrayList
         drawerList = new ArrayList<>();
         title = new ArrayList<>();
         sale = new ArrayList<>();
         historyDatas = new ArrayList<>();
 
+        utils.setFinanceStatus();
+        title = utils.getFinanceFromDB(true);
+        sale = utils.getFinanceFromDB(false);
         //Utils
-        utils = new ExchatUtils(getApplicationContext());
-        title = utils.getTitles();
-        sale = utils.getValues();
         //Header Widgets
         mainOrigin = (EditText) findViewById(R.id.header_prevValue);
         originUnit = (TextView) findViewById(R.id.header_prevUnit);
@@ -151,13 +143,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case 0:
                         break;
                     case 1:
-                        eraseDB();
+                        new MaterialDialog.Builder(MainActivity.this)
+                                .content("최근 기록을 삭제합니다.")
+                                .neutralText("취소")
+                                .positiveText("확인")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        eraseDB();
+                                    }
+                                })
+                                .show();
                         break;
                     case 2:
                         boolean b = sharedPreferences.getBoolean("fastSearch", true);
                         if (b) editor.putBoolean("fastSearch", false);
                         else editor.putBoolean("fastSearch", true);
-
+                        break;
                     case 3:
                         startActivity(new Intent(getApplicationContext(), DeveloperActivity.class));
                         break;
@@ -282,7 +284,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         LinearLayout cardOuter = (LinearLayout) findViewById(R.id.outer_view);
         cardOuter.removeAllViews();
         for (HistoryData data : results) {
-            Log.e("sexonthebeach", "PrevValue : " + data.getPrevValue() + "ConvertValue : " + data.getConvertValue());
             View view = layoutInflater.inflate(R.layout.main_cardview_content, null);
             TextView prevValue = (TextView) view.findViewById(R.id.prevValue);
             TextView prevUnit = (TextView) view.findViewById(R.id.prevUnit);
