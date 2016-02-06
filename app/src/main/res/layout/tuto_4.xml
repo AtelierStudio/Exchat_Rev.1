@@ -9,6 +9,7 @@
         android:layout_marginBottom="70dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <Spinner
             android:dropDownSelector="@drawable/ic_tutorial_slide4_spinner"
             android:gravity="center"
@@ -27,10 +28,11 @@
             android:layout_width="wrap_content"
             android:gravity="center"
             android:layout_height="wrap_content">
-            <TextView
-                android:textSize="20dp"
+            <kr.edcan.exchat.utils.ExchatTextView
+                android:textSize="25sp"
                 android:textColor="#FFF"
-                android:text="혹시 중요하게 여기는 환율 정보가 있나요?"
+                android:gravity="center"
+                android:text="혹시 중요히 여기는\n환율 정보가 있나요?"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
@@ -38,9 +40,9 @@
                 android:background="#1D262A"
                 android:layout_width="40dp"
                 android:layout_height="3dp"/>
-            <TextView
+            <kr.edcan.exchat.utils.ExchatTextView
                 android:layout_marginTop="10dp"
-                android:textSize="12dp"
+                android:textSize="14sp"
                 android:textColor="#8D9BA3"
                 android:gravity="center"
                 android:text="Exchat 메인에서 바로 알아보실 수 있도록 도와드립니다\n기본값은 미국 USD입니다"
@@ -52,17 +54,16 @@
     <TextView
         android:id="@+id/tutorial_page_next"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:gravity="center"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/round_square"
-        android:paddingBottom="10dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="8dp"
         android:text="시작하기"
         android:textColor="#FFF"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 </RelativeLayout>

@@ -56,7 +56,6 @@ public class ExchatUtils {
     }
 
     // Parse, Update
-
     public void setFinanceStatus() {
         Calendar c = Calendar.getInstance();
         lastUpdateTime = sharedPreferences.getLong("lastUpdateTime", -1);
@@ -70,6 +69,8 @@ public class ExchatUtils {
         titles = getCurrencyList("title");
         values = getCurrencyList("values");
         realm.beginTransaction();
+        RealmResults<FinanceCalcData> results = realm.where(FinanceCalcData.class).findAll();
+        results.clear();
         for (int i = 0; i < titles.size(); i++) {
             FinanceCalcData data = realm.createObject(FinanceCalcData.class);
             data.setContentTitle(titles.get(i));

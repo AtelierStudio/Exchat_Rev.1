@@ -226,7 +226,7 @@
                                             android:background="@drawable/round_square_gray"
                                             android:gravity="center"
                                             android:padding="1dp"
-                                            app:rd_style="@style/Material.Drawable.Ripple.Wave" />
+                                            android:visibility="visible"/>
 
                                         <ImageView
                                             android:id="@+id/main_spinner_to_image"
@@ -244,8 +244,7 @@
                                             android:layout_weight="1"
                                             android:background="@drawable/round_square_gray"
                                             android:gravity="center"
-                                            android:padding="1dp"
-                                            app:rd_style="@style/Material.Drawable.Ripple.Wave" />
+                                            android:padding="1dp" />
                                     </LinearLayout>
                                 </LinearLayout>
                             </android.support.v7.widget.CardView>

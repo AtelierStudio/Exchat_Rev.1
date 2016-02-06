@@ -6,6 +6,9 @@
     android:orientation="vertical">
 
     <ImageView
+        android:layout_marginTop="-40dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:id="@+id/tuto_2_main_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,27 +16,27 @@
         android:src="@drawable/title_tutorial_slide2_frame" />
 
     <LinearLayout
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="-20dp"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tuto_2_main_image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:gravity="center"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textSize="20dp"
+        android:layout_height="match_parent">
+        <kr.edcan.exchat.utils.ExchatTextView
+            android:textSize="25sp"
             android:textColor="#FFF"
             android:text="앱에서는 간편하게"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="#1D262A"
             android:layout_width="40dp"
             android:layout_height="3dp"/>
-        <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="12dp"
+        <kr.edcan.exchat.utils.ExchatTextView
+            android:layout_marginTop="5dp"
+            android:textSize="14dp"
             android:textColor="#8D9BA3"
             android:gravity="center"
             android:text="Exchat 안에서 나에게 중요한 환율과\n내가 계산하고 싶은 환율을 마음껏 계산해보세요."
@@ -49,11 +52,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/round_square"
-        android:paddingBottom="10dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="8dp"
         android:text="다음으로"
         android:textColor="#FFF"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 </RelativeLayout>
