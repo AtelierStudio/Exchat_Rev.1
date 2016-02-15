@@ -15,8 +15,11 @@ public class BootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
             context.startService(new Intent(context, ClipBoardService.class));
+<<<<<<< HEAD
 
             Log.e("asdf", "boot complete");
+=======
+>>>>>>> 4e76ad575e9c59140a7574f938f4d92181f0786a
         }
     }
 }

@@ -1,23 +1,33 @@
 package kr.edcan.exchat.activity;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
-import java.util.Date;
+import org.w3c.dom.Text;
 
-import io.realm.Realm;
-import io.realm.RealmResults;
-import io.realm.Sort;
 import kr.edcan.exchat.R;
-import kr.edcan.exchat.data.HistoryData;
 
 public class MainUnitSetActivity extends Activity {
+
+    TextView textView;
+    private Typeface typeface;
+    private static final String FONT_NAME = "roboto_light.ttf";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_unit_set);
+        setDefault();
 
     }
+
+    private void setDefault() {
+    }
+
 }

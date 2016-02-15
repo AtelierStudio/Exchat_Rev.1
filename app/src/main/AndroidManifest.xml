@@ -24,11 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.DeveloperActivity"></activity>
+        <activity android:name=".activity.DeveloperActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".service.ClipBoardService" />
 
-        <activity android:name=".activity.MainUnitSetActivity"></activity>
+        <activity android:name=".activity.MainUnitSetActivity">
+
+        </activity>
         <activity android:name=".activity.TutorialActivity"></activity>
 
         <receiver

@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:id="@+id/view" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3c3c3c"
-    android:layout_margin="50dp"
-    android:padding="16dp"
     tools:context="kr.edcan.exchat.activity.MainUnitSetActivity">
-
-    <!--<LinearLayout-->
-        <!--android:background="#aabb33"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"></LinearLayout>-->
-</LinearLayout>
+    <kr.edcan.exchat.utils.ExchatTextView
+        android:id="@+id/asdf"
+        android:layout_centerInParent="true"
+        android:text="aasf"
+        android:textSize="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <kr.edcan.exchat.utils.ExchatTextView
+        android:layout_below="@+id/asdf"
+        android:id="@+id/asdf1"
+        android:layout_centerInParent="true"
+        android:text="aasf"
+        android:textSize="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

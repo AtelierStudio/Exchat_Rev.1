@@ -17,13 +17,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/round_square"
-        android:paddingBottom="10dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp"
-        android:paddingTop="10dp"
-        android:text="다음으로"
         android:layout_marginBottom="20dp"
-        android:textSize="15dp"
-        android:textColor="#FFF" />
+        android:background="@drawable/round_square"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="8dp"
+        android:text="다음으로"
+        android:textColor="#FFF"
+        android:textSize="15sp" />
 </RelativeLayout>
