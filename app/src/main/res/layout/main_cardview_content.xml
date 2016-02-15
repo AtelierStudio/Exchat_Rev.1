@@ -1,4 +1,4 @@
-<!-- A CardView that contains a TextView -->
+<!-- A CardView that contains a kr.edcan.exchat.utils.ExchatTextView -->
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_view"
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
+        <kr.edcan.exchat.utils.ExchatTextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="최근 기록"
@@ -33,14 +33,14 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <kr.edcan.exchat.utils.ExchatTextView
                 android:id="@+id/prevValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1"
                 android:textSize="30sp" />
 
-            <TextView
+            <kr.edcan.exchat.utils.ExchatTextView
                 android:id="@+id/prevUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <kr.edcan.exchat.utils.ExchatTextView
                 android:id="@+id/convertValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                 android:textColor="@color/greenColor"
                 android:textSize="30sp" />
 
-            <TextView
+            <kr.edcan.exchat.utils.ExchatTextView
                 android:id="@+id/convertUnit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

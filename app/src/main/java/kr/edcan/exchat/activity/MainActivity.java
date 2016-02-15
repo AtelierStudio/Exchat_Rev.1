@@ -213,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String result = "0.0";
         String value = s.toString().trim();
         if (!value.isEmpty()) {
-            Log.e("selected", previousSpinner.getSelectedItemPosition() + "," + convertSpinner.getSelectedItemPosition());
             result = utils.calculateValues(Float.parseFloat(value), previousSpinner.getSelectedItemPosition()
                     , convertSpinner.getSelectedItemPosition()) + "";
         }
