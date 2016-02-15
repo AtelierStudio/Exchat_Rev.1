@@ -20,7 +20,6 @@ public class ExchatUtils {
 
     ArrayList<String> titles, values;
     Context context;
-
     public ExchatUtils(Context context) {
         this.context = context;
 

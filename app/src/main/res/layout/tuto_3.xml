@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
+        android:layout_marginTop="-90dp"
         android:id="@+id/tuto_3_main_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,13 +14,14 @@
         android:src="@drawable/title_tutorial_slide3_frame" />
 
     <LinearLayout
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tuto_3_main_image"
         android:layout_width="wrap_content"
         android:gravity="center"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="60dp">
         <TextView
             android:textSize="20dp"
             android:textColor="#FFF"
