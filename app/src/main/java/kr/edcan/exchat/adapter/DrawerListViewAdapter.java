@@ -5,11 +5,15 @@ package kr.edcan.exchat.adapter;
  */
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.rey.material.widget.Spinner;
+import com.rey.material.widget.Switch;
 
 import java.util.ArrayList;
 
@@ -22,9 +26,11 @@ import kr.edcan.exchat.R;
  */
 public class DrawerListViewAdapter extends ArrayAdapter<String> {
     private LayoutInflater mInflater;
+    Context context;
 
     public DrawerListViewAdapter(Context context, ArrayList<String> object) {
         super(context, 0, object);
+        this.context = context;
         mInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -39,10 +45,44 @@ public class DrawerListViewAdapter extends ArrayAdapter<String> {
         }
         String s = this.getItem(position);
         if (s != null) {
-            TextView title = (TextView)view.findViewById(R.id.drawer_listview_text);
-            title.setText(s);
+            final SharedPreferences sharedPreferences = context.getSharedPreferences("Exchat", 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            final Switch swit = (Switch) view.findViewById(R.id.drawer_switch);
+            switch (s) {
+                case "부팅시 자동 실행":
+                    swit.setVisibility(View.VISIBLE);
+                    if (sharedPreferences.getBoolean("onBoot", true)) {
+                        swit.setChecked(true);
+                        editor.putBoolean("onBoot", true);
+                        editor.commit();
+                    } else {
+                        swit.setChecked(false);
+                    }
+                    break;
+                case "빠른 검색":
+                    swit.setVisibility(View.VISIBLE);
+                    if (sharedPreferences.getBoolean("fastSearch", true)) {
+                        swit.setChecked(true);
+                        editor.putBoolean("fastSearch", true);
+                        editor.commit();
+                    } else {
+                        swit.setChecked(false);
+                    }
+                    break;
+                case "빠른 검색시 진동":
+                    swit.setVisibility(View.VISIBLE);
+                    if (sharedPreferences.getBoolean("fastSearchVibrate", true)) {
+                        swit.setChecked(true);
+                        editor.putBoolean("fastSearchVibrate", true);
+                        editor.commit();
+                    } else {
+                        swit.setChecked(false);
+                    }
+                    break;
+            }
         }
+        TextView title = (TextView) view.findViewById(R.id.drawer_listview_text);
+        title.setText(s);
         return view;
     }
 }
-

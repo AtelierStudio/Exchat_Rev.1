@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2B373E"
+    android:orientation="vertical"
+    android:weightSum="5"
+    tools:context="kr.edcan.exchat.activity.NetworkCheckActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="3">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_notconnected" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="30dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+        <kr.edcan.exchat.utils.ExchatTextView
+            android:textSize="20sp"
+            android:textColor="#Fafafa"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="첫 실행을 위해서는\n인터넷 연결이 필요합니다!"/>
+        <TextView
+            android:id="@+id/no_internet_finish"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/round_square"
+            android:layout_centerHorizontal="true"
+            android:textColor="#FFF"
+            android:layout_marginBottom="40dp"
+            android:layout_alignParentBottom="true"
+            android:text="설정으로 이동"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</LinearLayout>

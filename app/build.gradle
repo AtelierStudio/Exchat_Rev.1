@@ -4,12 +4,16 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
+    lintOptions{
+
+        abortOnError false
+    }
     defaultConfig {
         applicationId "kr.edcan.exchat"
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 1
-        versionName "0.5"
+        versionName "1.0"
     }
     buildTypes {
         release {

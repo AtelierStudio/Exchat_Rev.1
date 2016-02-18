@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-90dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:id="@+id/tuto_2_main_image"
@@ -16,8 +16,9 @@
         android:src="@drawable/title_tutorial_slide2_frame" />
 
     <LinearLayout
-        android:layout_marginTop="-20dp"
+        android:layout_marginTop="30dp"
         android:orientation="vertical"
+        android:layout_marginBottom="60dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/tuto_2_main_image"
         android:layout_width="match_parent"

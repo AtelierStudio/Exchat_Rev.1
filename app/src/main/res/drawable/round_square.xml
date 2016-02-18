@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <corners android:radius="20dp" />
-    <stroke android:width="1dp" android:color="#FFF"/>
-    <solid android:color="@android:color/transparent" />
+<!-- Non focused states -->
+<item android:drawable="@drawable/round_square_non_selected" android:state_focused="false" android:state_pressed="false" android:state_selected="false"/>
 
-</shape>
+<!-- Focused states -->
+<item android:drawable="@drawable/round_square_selected" android:state_focused="false" android:state_pressed="false" android:state_selected="true"/>
+<item android:drawable="@drawable/round_square_selected" android:state_focused="true" android:state_pressed="false" android:state_selected="false"/>
+<item android:drawable="@drawable/round_square_selected" android:state_focused="true" android:state_pressed="false" android:state_selected="true"/>
+
+<!-- Pressed -->
+<item android:drawable="@drawable/round_square_selected" android:state_pressed="true"/>
+
+</selector>

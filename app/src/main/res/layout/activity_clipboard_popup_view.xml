@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="kr.edcan.exchat.activity.ClipboardPopupViewActivity">
 
@@ -10,24 +11,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#425965"
-            android:padding="8dp">
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:src="@drawable/title_fastsearch" />
-        </LinearLayout>
 
-        <TextView
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center">
+
+                <kr.edcan.exchat.utils.ExchatTextView
+                    android:id="@+id/popup_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/round_square"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="4dp"
+                    android:text="공유"
+                    android:textColor="#FFF"
+                    android:textSize="13sp" />
+
+                <kr.edcan.exchat.utils.ExchatTextView
+                    android:id="@+id/popup_launch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:background="@drawable/round_square"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="4dp"
+                    android:text="앱 열기"
+                    android:textColor="#FFF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <kr.edcan.exchat.utils.ExchatTextView
             android:id="@+id/dialog_prev"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:textColor="#526772"
+            android:textColor="#616161"
             android:textSize="30dp" />
 
         <LinearLayout
@@ -35,15 +74,15 @@
             android:layout_height="1dp"
             android:background="#f3f3f3" />
 
-        <TextView
+        <kr.edcan.exchat.utils.ExchatTextView
             android:id="@+id/dialog_result"
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:textColor="#526772"
             android:textSize="30dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:isBold="true" />
 
         <LinearLayout
             android:layout_width="match_parent"

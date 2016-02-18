@@ -13,13 +13,9 @@ import kr.edcan.exchat.activity.MainActivity;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent.getAction().equals("android.intent.action.BOOT_COMPLETED")){
-            context.startService(new Intent(context, ClipBoardService.class));
-<<<<<<< HEAD
-
-            Log.e("asdf", "boot complete");
-=======
->>>>>>> 4e76ad575e9c59140a7574f938f4d92181f0786a
+        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+            if (context.getSharedPreferences("Exchat", 0).getBoolean("onBoot", true))
+                context.startService(new Intent(context, ClipBoardService.class));
         }
     }
 }

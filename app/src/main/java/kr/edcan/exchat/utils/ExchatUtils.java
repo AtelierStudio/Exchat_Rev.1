@@ -2,6 +2,7 @@ package kr.edcan.exchat.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -31,13 +32,13 @@ public class ExchatUtils {
     ArrayList<String> titles;
     ArrayList<String> values;
     Context context;
-<<<<<<< HEAD
-=======
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Realm realm;
 
->>>>>>> 4e76ad575e9c59140a7574f938f4d92181f0786a
+    public ExchatUtils() {
+    }
+
     public ExchatUtils(Context context) {
         this.context = context;
         realm = Realm.getInstance(context);
@@ -50,8 +51,8 @@ public class ExchatUtils {
         ArrayList<String> arrayList = new ArrayList<>();
         realm.beginTransaction();
         RealmResults<FinanceCalcData> results = realm.where(FinanceCalcData.class).findAll();
-        for(FinanceCalcData result : results){
-            if(isTitle) arrayList.add(result.getContentTitle());
+        for (FinanceCalcData result : results) {
+            if (isTitle) arrayList.add(result.getContentTitle());
             else arrayList.add(result.getContentValue());
         }
         realm.commitTransaction();
@@ -59,12 +60,17 @@ public class ExchatUtils {
     }
 
     // Parse, Update
+    public boolean isNetworkAvailable(final Context context) {
+        final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
+        return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
     public void setFinanceStatus() {
-        Calendar c = Calendar.getInstance();
-        lastUpdateTime = sharedPreferences.getLong("lastUpdateTime", -1);
-        if (lastUpdateTime == -1 || c.get(Calendar.HOUR_OF_DAY) >= 18 ||
-                System.currentTimeMillis() - lastUpdateTime >= 86400000) {
-            updateFinance();
+        if (isNetworkAvailable(context)) {
+            lastUpdateTime = sharedPreferences.getLong("lastUpdateTime", -1);
+            if (lastUpdateTime == -1 || System.currentTimeMillis() - lastUpdateTime >= 86400000 / 4) {
+                updateFinance();
+            }
         }
     }
 
@@ -76,7 +82,21 @@ public class ExchatUtils {
         results.clear();
         for (int i = 0; i < titles.size(); i++) {
             FinanceCalcData data = realm.createObject(FinanceCalcData.class);
-            data.setContentTitle(titles.get(i));
+            String s = titles.get(i);
+            switch (i) {
+                case 3:
+                    s = "일본 JPY";
+                    break;
+                case 30:
+                    s = "인도네시아 IDR";
+                    break;
+                case 40:
+                    s = "베트남 VND";
+                    break;
+                case 41:
+                    s = "남아프리카공화국 ZAR";
+            }
+            data.setContentTitle(s);
             data.setContentValue(values.get(i));
         }
         editor.putLong("lastUpdateTime", System.currentTimeMillis());
@@ -120,6 +140,7 @@ public class ExchatUtils {
             }
             Elements data = doc.select(CSSQuery);
             for (Element datas : data) {
+                //Log.e("asdf", data.text());
                 arrayList.add(datas.text());
             }
             if (CSSQuery.equals("td.sale"))

@@ -15,3 +15,16 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-keep class io.realm.** { *; }
+-keep public class io.realm.** { *; }
+-keep class android.** { *; }
+-keep class com.google.** { *; }
+-keep class rx.** { *; }
+-keep class javax.** { *; }
+-keep class kr.edcan.exchat.data.** {*;}
+-dontwarn javax.**
+-dontwarn io.realm.**
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.support.v7.app.** { *; }
+-keep interface android.support.v7.app.** { *; }

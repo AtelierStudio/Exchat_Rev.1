@@ -6,41 +6,26 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_marginTop="-90dp"
         android:id="@+id/tuto_3_main_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-40dp"
+        android:layout_marginTop="-90dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:src="@drawable/title_tutorial_slide3_frame" />
 
     <LinearLayout
-<<<<<<< HEAD
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-=======
         android:layout_width="match_parent"
         android:layout_height="match_parent"
->>>>>>> 4e76ad575e9c59140a7574f938f4d92181f0786a
         android:layout_below="@+id/tuto_3_main_image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-20dp"
+        android:layout_marginBottom="60dp"
+        android:layout_marginTop="30dp"
         android:gravity="center"
-<<<<<<< HEAD
-        android:layout_height="match_parent"
-        android:layout_marginBottom="60dp">
-        <TextView
-            android:textSize="20dp"
-            android:textColor="#FFF"
-            android:text="일상에서는 빠르게"
-=======
         android:orientation="vertical">
 
         <kr.edcan.exchat.utils.ExchatTextView
->>>>>>> 4e76ad575e9c59140a7574f938f4d92181f0786a
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="일상에서는 빠르게"

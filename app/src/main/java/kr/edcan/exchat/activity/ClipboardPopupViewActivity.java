@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -12,12 +13,14 @@ import kr.edcan.exchat.R;
 import kr.edcan.exchat.data.ClipBoardData;
 import kr.edcan.exchat.data.HistoryData;
 import kr.edcan.exchat.utils.ExchatClipboardUtils;
+import kr.edcan.exchat.utils.ExchatTextView;
 
 public class ClipboardPopupViewActivity extends Activity {
 
     Intent intent;
 
-    TextView prev, result;
+    ExchatTextView prev, result, share, launch;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,16 +33,15 @@ public class ClipboardPopupViewActivity extends Activity {
 
     private void setDefault() {
         intent = getIntent();
-        prev = (TextView) findViewById(R.id.dialog_prev);
-        result = (TextView) findViewById(R.id.dialog_result);
-        ExchatClipboardUtils utils = new ExchatClipboardUtils(getApplicationContext());
-        ClipBoardData data = new ClipBoardData(intent.getIntExtra("unit", 0),
-                intent.getFloatExtra("value", (float) 0.0), intent.getFloatExtra("convertValue", (float) 0.0));
 
-        prev.setText(data.getValue() + " " + utils.foreignmoneyUnits[data.getUnit()]);
-        result.setText(data.getConvertValue() + " " + "원");
     }
 
+    private void shareText() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, prev.getText().toString() + " = " + result.getText().toString() + "입니다. #Exchat.");
+        startActivity(Intent.createChooser(sharingIntent, "환율 정보 공유"));
+    }
 
     @Override
     protected void onPause() {

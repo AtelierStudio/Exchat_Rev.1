@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,6 +25,7 @@
                 app:titleTextColor="#FFF" />
 
             <com.github.florent37.parallax.ScrollView
+                android:scrollbars="none"
                 android:id="@+id/contentScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -67,18 +67,19 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="end"
-                                android:text="100 JPY"
                                 android:textColor="#FFF"
-                                android:textSize="23dp" />
+                                android:textSize="28dp"
+                                app:isBold="true"
+                                android:textStyle="bold" />
 
                             <kr.edcan.exchat.utils.ExchatTextView
+                                android:layout_marginTop="-5dp"
                                 android:id="@+id/main_major_finance_to"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="end"
-                                android:text="1,020.58 KRW"
                                 android:textColor="#FFF"
-                                android:textSize="23dp"
+                                android:textSize="28dp"
                                 android:textStyle="bold" />
 
                             <kr.edcan.exchat.utils.ExchatTextView
@@ -88,11 +89,11 @@
                                 android:layout_marginTop="5dp"
                                 android:background="@drawable/main_share_selector"
                                 android:gravity="end"
-                                android:paddingBottom="5dp"
-                                android:paddingLeft="8dp"
-                                android:paddingRight="8dp"
-                                android:paddingTop="5dp"
-                                android:text="주요 환율 공유"
+                                android:paddingBottom="8dp"
+                                android:paddingLeft="12dp"
+                                android:paddingRight="12dp"
+                                android:paddingTop="8dp"
+                                android:text="환율 공유"
                                 android:textColor="#FFF"
                                 android:textSize="13dp" />
                         </LinearLayout>
@@ -149,6 +150,18 @@
                                         android:layout_height="wrap_content"
                                         android:orientation="horizontal">
 
+                                        <kr.edcan.exchat.utils.ExchatTextView
+                                            android:id="@+id/header_prevUnit"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_alignBottom="@+id/header_prevValue"
+                                            android:layout_marginBottom="3dp"
+                                            android:text="KRW"
+                                            android:layout_marginLeft="5dp"
+                                            android:layout_toRightOf="@+id/header_prevValue"
+                                            android:textColor="@color/textColor"
+                                            android:textSize="18sp" />
+
                                         <EditText
                                             android:id="@+id/header_prevValue"
                                             android:layout_width="wrap_content"
@@ -162,17 +175,6 @@
                                             android:textColorHint="@color/textColor"
                                             android:textSize="30sp" />
 
-                                        <kr.edcan.exchat.utils.ExchatTextView
-                                            android:id="@+id/header_prevUnit"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_alignBottom="@+id/header_prevValue"
-                                            android:layout_marginBottom="3dp"
-                                            android:layout_marginLeft="3dp"
-                                            android:layout_toRightOf="@+id/header_prevValue"
-                                            android:text="KRW"
-                                            android:textColor="@color/textColor"
-                                            android:textSize="18sp" />
                                     </RelativeLayout>
 
                                     <LinearLayout
@@ -201,13 +203,14 @@
                                             android:id="@+id/header_convertUnit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
+                                            android:layout_toRightOf="@+id/header_convertValue"
                                             android:layout_alignBottom="@+id/header_convertValue"
                                             android:layout_marginBottom="3dp"
-                                            android:layout_marginLeft="3dp"
-                                            android:layout_toRightOf="@+id/header_convertValue"
+                                            android:layout_marginLeft="5dp"
                                             android:text="USD"
                                             android:textColor="@color/orangeMiddle"
                                             android:textSize="18sp" />
+
                                     </RelativeLayout>
 
                                     <LinearLayout
@@ -226,7 +229,7 @@
                                             android:background="@drawable/round_square_gray"
                                             android:gravity="center"
                                             android:padding="1dp"
-                                            android:visibility="visible"/>
+                                            android:visibility="visible" />
 
                                         <ImageView
                                             android:id="@+id/main_spinner_to_image"
