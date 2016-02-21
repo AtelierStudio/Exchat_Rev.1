@@ -6,6 +6,7 @@ package kr.edcan.exchat.adapter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.view.GravityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.rey.material.widget.Switch;
 import java.util.ArrayList;
 
 import kr.edcan.exchat.R;
+import kr.edcan.exchat.activity.MainActivity;
 
 /**
  * Created by kotohana5706 on 2015. 11. 21.
@@ -48,6 +50,7 @@ public class DrawerListViewAdapter extends ArrayAdapter<String> {
             final SharedPreferences sharedPreferences = context.getSharedPreferences("Exchat", 0);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             final Switch swit = (Switch) view.findViewById(R.id.drawer_switch);
+            swit.setEnabled(false);
             switch (s) {
                 case "부팅시 자동 실행":
                     swit.setVisibility(View.VISIBLE);
@@ -69,6 +72,15 @@ public class DrawerListViewAdapter extends ArrayAdapter<String> {
                         swit.setChecked(false);
                     }
                     break;
+                case "빠른 검색 알림":
+                    swit.setVisibility(View.VISIBLE);
+                    if(sharedPreferences.getBoolean("fastSearchAlert", true)){
+                        swit.setChecked(true);
+                        editor.putBoolean("fastSearchAlert", true);
+                        editor.commit();
+                    } else{
+                        swit.setChecked(false);
+                    }
                 case "빠른 검색시 진동":
                     swit.setVisibility(View.VISIBLE);
                     if (sharedPreferences.getBoolean("fastSearchVibrate", true)) {

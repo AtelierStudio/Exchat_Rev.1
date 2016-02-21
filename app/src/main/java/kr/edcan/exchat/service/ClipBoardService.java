@@ -43,6 +43,11 @@ public class ClipBoardService extends Service {
     Intent startMain;
     MaterialDialog materialDialog;
     public static Service service;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
+    ClipboardManager manager;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -61,6 +66,9 @@ public class ClipBoardService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        sharedPreferences = getSharedPreferences("Exchat", 0);
+        editor = sharedPreferences.edit();
+        manager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         TaskStackBuilder killbuild = TaskStackBuilder.create(this);
         killbuild.addNextIntent(new Intent(getApplicationContext(), KillProcess.class));
         PendingIntent killProcess = killbuild.getPendingIntent(1, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -79,16 +87,15 @@ public class ClipBoardService extends Service {
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         builder.setContentIntent(resultPendingIntent);
-        startForeground(INTENT_KEY, builder.build());
-        final ClipboardManager manager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (sharedPreferences.getBoolean("fastSearchAlert", true)) {
+            Log.e("asdf", "fastSearch");
+            startForeground(INTENT_KEY, builder.build());
+        }
         manager.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
             @Override
             public void onPrimaryClipChanged() {
-                final SharedPreferences sharedPreferences = getSharedPreferences("Exchat", 0);
-                final SharedPreferences.Editor editor = sharedPreferences.edit();
                 final boolean fastSearch = sharedPreferences.getBoolean("fastSearch", true);
                 if (fastSearch) {
-
                     if (System.currentTimeMillis() - sharedPreferences.getLong("lastFastSearchTime", System.currentTimeMillis() - 201) > 200) {
                         if (manager.getPrimaryClipDescription().toString().contains("text")) {
                             String capturedString = manager.getPrimaryClip().getItemAt(0).getText().toString();

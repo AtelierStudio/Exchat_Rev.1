@@ -1,8 +1,9 @@
 package kr.edcan.exchat.activity;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,16 +22,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ import com.rey.material.widget.Switch;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -55,27 +59,29 @@ import kr.edcan.exchat.utils.ExchatUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TYPEFACE_NAME = "roboto_light.ttf";
     public static Context context;
+    public static DrawerLayout drawerLayout;
+    public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    private static final String TYPEFACE_NAME = "roboto_light.ttf";
     Typeface typeface = null;
     TextView shareCurrent, originUnit, convertValue, convertUnit, majorFinanceFrom, majorFinanceTo;
     Toolbar toolbar;
     ActionBarDrawerToggle toggle;
-    DrawerLayout drawerLayout;
     ArrayList<String> drawerList, title, sale;
     ArrayList<HistoryData> historyDatas;
     ListView drawerMenu;
     ExchatUtils utils;
     Spinner previousSpinner, convertSpinner;
     Realm realm;
-    ImageView spinnerTo;
+    ImageView spinnerTo, calcCopy, calcSave, calcReverse;
     EditText mainOrigin;
     Intent service;
     int majorFinance;
     MaterialDialog loading;
-    public static int OVERLAY_PERMISSION_REQ_CODE = 1234;
+    RelativeLayout headerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setPackage();
         sharedPreferences = getSharedPreferences("Exchat", 0);
         editor = sharedPreferences.edit();
-        boolean isFirst = sharedPreferences.getBoolean("isFirst", true);
-        if (isFirst) {
+        if (sharedPreferences.getBoolean("isFirst", true)) {
             if (!new ExchatUtils().isNetworkAvailable(getApplicationContext()))
                 startActivity(new Intent(getApplicationContext(), NetworkCheckActivity.class));
             else startActivity(new Intent(getApplicationContext(), TutorialActivity.class));
@@ -158,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sale = utils.getFinanceFromDB(false);
         //Utils
         //Header Widgets
+        headerLayout = (RelativeLayout) findViewById(R.id.header_layout);
         mainOrigin = (EditText) findViewById(R.id.header_prevValue);
         originUnit = (TextView) findViewById(R.id.header_prevUnit);
         convertValue = (TextView) findViewById(R.id.header_convertValue);
@@ -178,32 +184,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+
         //Widgets
         previousSpinner = (Spinner) findViewById(R.id.main_previous_spinner);
         convertSpinner = (Spinner) findViewById(R.id.main_convert_spinner);
         SpinnerAdapter units = new ArrayAdapter<String>(MainActivity.this, R.layout.spinner_textstyle, title);
         previousSpinner.setAdapter(units);
         convertSpinner.setAdapter(units);
-
+        calcCopy = (ImageView) findViewById(R.id.main_copy_to_clipboard);
+        calcReverse = (ImageView) findViewById(R.id.main_change_unit);
+        calcSave = (ImageView) findViewById(R.id.main_save_calc);
         spinnerTo = (ImageView) findViewById(R.id.main_spinner_to_image);
         spinnerTo.getDrawable().setColorFilter(Color.parseColor("#7B8F9A"), PorterDuff.Mode.MULTIPLY);
         shareCurrent = (TextView) findViewById(R.id.main_share);
         drawerMenu = (ListView) findViewById(R.id.drawer_listview);
 
-        String list[] = new String[]{"주요 환율 수정", "최근 내역 삭제", "부팅시 자동 실행", "빠른 검색", "빠른 검색시 진동", "개발자 정보", "앱 종료"};
+        String list[] = new String[]{"주요 환율 수정", "최근 내역 삭제", "부팅시 자동 실행", "빠른 검색", "빠른 검색 알림", "빠른 검색시 진동", "개발자 정보", "앱 종료"};
         Collections.addAll(drawerList, list);
         DrawerListViewAdapter adapter = new DrawerListViewAdapter(this, drawerList);
         drawerMenu.setAdapter(adapter);
         drawerMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Switch sw = (Switch) view.findViewById(R.id.drawer_switch);
-                sw.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(Switch view, boolean checked) {
-                        drawerLayout.closeDrawer(GravityCompat.START);
-                    }
-                });
+                final Switch sw = (Switch) view.findViewById(R.id.drawer_switch);
                 switch (position) {
                     case 0:
                         // 주요 환율 수정
@@ -252,6 +255,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         editor.commit();
                         break;
                     case 4:
+                        //빠른 검색 알림
+                        if (sw.isChecked()) {
+                            editor.putBoolean("fastSearchAlert", false);
+                            sw.setChecked(false);
+                        } else {
+                            editor.putBoolean("fastSearchAlert", true);
+                            sw.setChecked(true);
+                        }
+                        editor.commit();
+                        stopService(service);
+                        startService(service);
+                        break;
+                    case 5:
                         //빠른 검색시 진동
                         if (sw.isChecked()) {
                             editor.putBoolean("fastSearchVibrate", false);
@@ -262,11 +278,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                         editor.commit();
                         break;
-                    case 5:
+                    case 6:
                         // 개발자 정보
                         startActivity(new Intent(getApplicationContext(), DeveloperActivity.class));
                         break;
-                    case 6:
+                    case 7:
                         //앱 종료
                         new MaterialDialog.Builder(MainActivity.this)
                                 .title("앱 종료")
@@ -290,7 +306,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         });
 
+        headerLayout.setOnClickListener(this);
         shareCurrent.setOnClickListener(this);
+        calcSave.setOnClickListener(this);
+        calcReverse.setOnClickListener(this);
+        calcCopy.setOnClickListener(this);
         previousSpinner.setSelection(1);
         convertSpinner.setSelection(0);
         previousSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -348,11 +368,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         convertValue.setText(result);
     }
 
-    private void shareText() {
+    private void shareText(String s) {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, "오늘 " + title.get(majorFinance).split(" ")[0] + " 환율은 " +
-                majorFinanceFrom.getText().toString() + " = " + majorFinanceTo.getText().toString() + " 입니다. #Exchat.");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, s);
         startActivity(Intent.createChooser(sharingIntent, "환율 정보 공유"));
     }
 
@@ -363,38 +382,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .findAll();
         results.clear();
         realm.commitTransaction();
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.main_share:
-                shareText();
-                break;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setHistoryData();
-        setMajorCalc();
     }
 
     private void setHistoryData() {
@@ -421,4 +408,71 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             cardOuter.addView(view);
         }
     }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_share:
+                shareText("오늘 " + title.get(majorFinance).split(" ")[0] + " 환율은 " +
+                        majorFinanceFrom.getText().toString() + " = " + majorFinanceTo.getText().toString() + " 입니다. #Exchat.");
+                break;
+            case R.id.header_layout:
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.showSoftInput(mainOrigin, 0);
+                }
+                break;
+            case R.id.main_save_calc:
+                realm.beginTransaction();
+                HistoryData data = realm.createObject(HistoryData.class);
+                Date date = new Date(System.currentTimeMillis());
+                data.setConvertUnit(convertSpinner.getSelectedItemPosition());
+                data.setPrevUnit(previousSpinner.getSelectedItemPosition());
+                data.setConvertValue(Float.parseFloat(convertValue.getText().toString()));
+                data.setPrevValue(getMainOriginFloat());
+                data.setDate(date);
+                realm.commitTransaction();
+                setHistoryData();
+                break;
+            case R.id.main_change_unit:
+                int origin = previousSpinner.getSelectedItemPosition();
+                int result = convertSpinner.getSelectedItemPosition();
+                previousSpinner.setSelection(result);
+                convertSpinner.setSelection(origin);
+                break;
+            case R.id.main_copy_to_clipboard:
+                shareText(getMainOriginFloat() + " " + originUnit.getText().toString() + " = " + convertValue.getText().toString() + " " + convertUnit + "입니다. #Exchat.");
+                break;
+        }
+    }
+
+    public float getMainOriginFloat() {
+        String s = mainOrigin.getText().toString();
+        return (s.trim().equals("") ? (float) 0.0 : Float.parseFloat(s));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setHistoryData();
+        setMajorCalc();
+    }
+
 }
