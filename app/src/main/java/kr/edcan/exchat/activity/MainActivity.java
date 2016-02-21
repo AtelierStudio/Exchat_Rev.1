@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SpinnerAdapter units = new ArrayAdapter<String>(MainActivity.this, R.layout.spinner_textstyle, title);
         previousSpinner.setAdapter(units);
         convertSpinner.setAdapter(units);
-        calcCopy = (ImageView) findViewById(R.id.main_copy_to_clipboard);
+        calcCopy = (ImageView) findViewById(R.id.main_share_calc);
         calcReverse = (ImageView) findViewById(R.id.main_change_unit);
         calcSave = (ImageView) findViewById(R.id.main_save_calc);
         spinnerTo = (ImageView) findViewById(R.id.main_spinner_to_image);
@@ -457,8 +457,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 previousSpinner.setSelection(result);
                 convertSpinner.setSelection(origin);
                 break;
-            case R.id.main_copy_to_clipboard:
-                shareText(getMainOriginFloat() + " " + originUnit.getText().toString() + " = " + convertValue.getText().toString() + " " + convertUnit + "입니다. #Exchat.");
+            case R.id.main_share_calc:
+                shareText(getMainOriginFloat() + " " + originUnit.getText().toString() + " = " + convertValue.getText().toString() + " " + convertUnit.getText().toString() + "입니다. #Exchat.");
                 break;
         }
     }

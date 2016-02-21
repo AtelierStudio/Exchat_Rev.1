@@ -161,10 +161,10 @@
 
                                             <ImageView
                                                 android:layout_marginLeft="10dp"
-                                                android:id="@+id/main_copy_to_clipboard"
+                                                android:id="@+id/main_share_calc"
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
-                                                android:src="@drawable/btn_copy" />
+                                                android:src="@drawable/btn_share" />
 
                                             <ImageView
                                                 android:layout_marginLeft="10dp"
